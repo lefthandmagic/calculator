@@ -12,7 +12,36 @@ import Foundation
 class CalculatorBrain {
     
     private var accumulator = 0.0
-    
+
+    typealias PropertyList = AnyObject
+
+    private var internalProgram = [AnyObject] ()
+
+    var program: PropertyList {
+        get {
+            return internalProgram as CalculatorBrain.PropertyList
+        }
+        set {
+            clear()
+            if let arrayOfOps = newValue as? [AnyObject] {
+                for op in arrayOfOps {
+                    if let operand = op as? Double {
+                        setOperand(operand: operand)
+                    } else if let operand = op as? String {
+                        performOperation(symbol: operand)
+                    }
+                }
+
+            }
+        }
+    }
+
+    private func clear() {
+        accumulator = 0.0
+        pending = nil
+        internalProgram.removeAll()
+    }
+
     private var pending: pendingBinaryOperationInfo?
     
     private var operations = ["π": Operation.Constant(M_PI),
@@ -35,9 +64,11 @@ class CalculatorBrain {
     
     func setOperand (operand : Double) {
         accumulator = operand
+        internalProgram.append(operand as AnyObject)
     }
     
     func performOperation (symbol : String) {
+        internalProgram.append(symbol as AnyObject)
         if let operation = operations[symbol] {
             switch operation {
             case .Constant(let value): accumulator = value

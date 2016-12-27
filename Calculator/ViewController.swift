@@ -36,7 +36,20 @@ class ViewController: UIViewController {
         }
         userIsIntheMiddleOfTyping = true
     }
-    
+
+    var savedProgram: CalculatorBrain.PropertyList?
+
+    @IBAction func save() {
+        savedProgram = brain.program
+    }
+
+    @IBAction func restore() {
+        if let savedProgram = savedProgram {
+            brain.program = savedProgram
+            displayValue = brain.result
+        }
+    }
+
     private var brain = CalculatorBrain()
     
     @IBAction private func performOperation(_ sender: UIButton) {
