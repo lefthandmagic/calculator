@@ -44,7 +44,7 @@ class CalculatorBrain {
 
     private var pending: pendingBinaryOperationInfo?
     
-    private var operations = ["π": Operation.Constant(M_PI),
+    private var operations = ["π": Operation.Constant(Double.pi),
                               "e": Operation.Constant(M_E),
                               "±": Operation.Unary({-$0}),
                               "√": Operation.Unary(sqrt),
